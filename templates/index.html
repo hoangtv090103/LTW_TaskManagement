@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
+        <style>
+            .app {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: row;
+            }
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('projects') }}">Projects</a></li>
+
+                    <li><a href="{{ url_for('tasks') }}">Tasks</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="container">
+            <section id="home" class="app">
+                <h2>Home App</h2>
+                <!-- Thêm nội dung của ứng dụng Home ở đây -->
+            </section>
+            <section id="projects" class="app">
+                <h2>Projects App</h2>
+                <!-- Thêm nội dung của ứng dụng Projects ở đây -->
+            </section>
+            <section id="tasks" class="app">
+                <h2>Tasks App</h2>
+                <!-- Thêm nội dung của ứng dụng Tasks ở đây -->
+            </section>
+            <section id="settings" class="app">
+                <h2>Settings App</h2>
+                <!-- Thêm nội dung của ứng dụng Settings ở đây -->
+            </section>
+        </main>
+    </body>
+</html>

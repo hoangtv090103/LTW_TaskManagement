@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
+        <style>
+            {#            Form to center of body#}
+            form {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: lightgrey;
+                width: 300px;
+                height: min-content;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            {#            Form to center of body#}
+            label {
+                display: block;
+            }
+
+            input {
+                display: block;
+                width: inherit;
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <form action="/login" method="post">
+            <h1>Login</h1>
+            <input type="text" name="username" id="username" placeholder="Username">
+            <input type="password" name="password" id="password" placeholder="Password">
+            <input type="submit" value="Login">
+        </form>
+    </body>
+</html>
