@@ -1,11 +1,7 @@
-import os
+from flask import request, session, redirect, url_for, render_template
 
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
-app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(os.path.join(basedir, 'db/task_management.db'))
-db = SQLAlchemy(app)
+from task_management import app, db
+from task_management.models import *
 
 
 @app.route('/login', methods=['POST', 'GET'])

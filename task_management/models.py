@@ -1,5 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy(app)
+from task_management import db
 
 group_user = db.Table('group_user',
                       db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True),
