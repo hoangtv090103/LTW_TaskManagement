@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
+
+    </head>
+    <body style="background: #CCC7BF">
+        {% include 'header.html' %}
+        <h1>Projects</h1>
+        <table>
+            <tr>
+                <th>Project Name</th>
+                <th>Project Description</th>
+            </tr>
+            {% for project in projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

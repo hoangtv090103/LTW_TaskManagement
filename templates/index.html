@@ -25,32 +25,34 @@
     </head>
     <body>
         <header>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('index') }}">Home</a></li>
-                    <li><a href="{{ url_for('projects') }}">Projects</a></li>
-
-                    <li><a href="{{ url_for('tasks') }}">Tasks</a></li>
-                </ul>
-            </nav>
+            {#            <nav>#}
+            {#                <ul>#}
+            {#                    <li><a href="{{ url_for('index') }}">Home</a></li>#}
+            {#                    <li><a href="{{ url_for('projects') }}">Projects</a></li>#}
+            {##}
+            {#                    <li><a href="{{ url_for('tasks') }}">Tasks</a></li>#}
+            {#                </ul>#}
+            {#            </nav>#}
         </header>
         <main class="container">
-            <section id="home" class="app">
-                <h2>Home App</h2>
-                <!-- Thêm nội dung của ứng dụng Home ở đây -->
-            </section>
-            <section id="projects" class="app">
-                <h2>Projects App</h2>
-                <!-- Thêm nội dung của ứng dụng Projects ở đây -->
-            </section>
-            <section id="tasks" class="app">
-                <h2>Tasks App</h2>
-                <!-- Thêm nội dung của ứng dụng Tasks ở đây -->
-            </section>
-            <section id="settings" class="app">
-                <h2>Settings App</h2>
-                <!-- Thêm nội dung của ứng dụng Settings ở đây -->
-            </section>
+            <a href="{{ url_for('projects') }}">
+                <section id="projects" class="app">
+                    <h2>Projects App</h2>
+                    <!-- Thêm nội dung của ứng dụng Projects ở đây -->
+                </section>
+            </a>
+            <a href="{{ url_for('tasks') }}">
+                <section id="tasks" class="app">
+                    <h2>Tasks App</h2>
+                    <!-- Thêm nội dung của ứng dụng Tasks ở đây -->
+                </section>
+            </a>
+            <a href="{{ url_for('settings') }}">
+                <section id="settings" class="app">
+                    <h2>Settings App</h2>
+                    <!-- Thêm nội dung của ứng dụng Settings ở đây -->
+                </section>
+            </a>
         </main>
     </body>
 </html>

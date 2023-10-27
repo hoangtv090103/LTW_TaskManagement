@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Settings</title>
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
+
+    </head>
+    <body>
+        {% include 'header.html' %}
+        <main class="container">
+            <a href="{{ url_for('users') }}">
+
+                <section id="users" class="app">
+                    <h2>Users</h2>
+                    <!-- Thêm nội dung của ứng dụng Home ở đây -->
+                </section>
+            </a>
+            <a href="{{ url_for('groups') }}">
+
+                <section id="groups" class="app">
+                    <h2>Groups</h2>
+                    <!-- Thêm nội dung của ứng dụng Home ở đây -->
+                </section>
+            </a>
+        </main>
+    </body>
+</html>

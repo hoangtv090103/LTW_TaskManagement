@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="task_managament.db" uuid="0f8a4db8-8632-47ab-9a43-edff5c8b5ee9">
+    <data-source source="LOCAL" name="task_management.db" uuid="786f8ed8-50aa-4f9b-b0e7-d0f7b6b8d76b">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db/task_managament.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db/task_management.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

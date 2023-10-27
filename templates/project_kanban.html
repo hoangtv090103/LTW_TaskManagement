@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
+
+    </head>
+    <body style="background: #CCC7BF">
+        {% include 'header.html' %}
+        <h1>Projects</h1>
+        <div class="kanban">
+            <div class="kanban-heading">
+                <strong class="kanban-heading-text">Projects</strong>
+            </div>
+            <div class="kanban-board">
+                {% for project in projects %}
+                    <div class="kanban-block project">
+                        {{ project.name }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
