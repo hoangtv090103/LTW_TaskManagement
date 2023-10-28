@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Groups</title>
-        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
-
-    </head>
-    <body>
-        {% include 'header.html' %}
-        <main>
-            <button><a href="{{ url_for('new_group') }}">New Group</a></button>
-            <h1>Groups</h1>
-            <table>
-                <thead>
+{% extends 'base.html' %}
+{% block title %}Groups{% endblock %}
+{% block content %}
+    <main>
+        <button><a href="{{ url_for('new_group') }}">New Group</a></button>
+        <h1>Groups</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
                     <tr>
-                        <th>Group Name</th>
+                        <td>
+                            <a href="{{ url_for('group_by_id', group_id=group.id) }}">{{ group.name }}</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for group in groups %}
-                        <tr>
-                            <td>
-                                <a href="{{ url_for('group_by_id', group_id=group.id) }}">{{ group.name }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </main>
-    </body>
-</html>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

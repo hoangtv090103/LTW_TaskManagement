@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
-
-    </head>
-    <body style="background: #CCC7BF">
-        {% include 'header.html' %}
-        <h1>Projects</h1>
-        <table>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Projects</h1>
+    <button onclick="window.location.href='/projects/new'">Create Project</button>
+    <table>
+        <tr>
+            <th>Project Name</th>
+            <th>Project Description</th>
+        </tr>
+        {% for project in projects %}
             <tr>
-                <th>Project Name</th>
-                <th>Project Description</th>
+                <td>{{ project.name }}</td>
+                <td>{{ project.description }}</td>
             </tr>
-            {% for project in projects %}
-                <tr>
-                    <td>{{ project.name }}</td>
-                    <td>{{ project.description }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" type="text/css">
-
-    </head>
-    <body>
-        {% include 'header.html' %}
-        <h1>Tasks</h1>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Tasks{% endblock %}
+{% block content %}
+    <h1>Tasks</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+```

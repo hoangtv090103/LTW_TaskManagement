@@ -1,4 +1,5 @@
-from task_management import db
+from task_management import db, bcrypt, login_manager
+from flask_login import UserMixin  # UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
 
 group_user = db.Table('group_user',
                       db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True),
@@ -21,12 +22,25 @@ class Group(db.Model):
         return '<Group %r>' % self.name
 
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    """
+    Hàm này được sử dụng để load user từ session khi user đã đăng nhập
+    :param user_id:
+    :return:
+    """
+    return User.query.get(int(user_id))
+
+
+class User(db.Model, UserMixin):
+    """
+    UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
+    """
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     username = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password_hashed = db.Column(db.String(100), nullable=False)
     active = db.Column(db.Boolean, default=True)
     phone = db.Column(db.String(100))
     email = db.Column(db.String(100))
@@ -36,7 +50,28 @@ class User(db.Model):
     write_uid = db.Column(db.Integer, default=0)
     role = db.Column(db.String(100))
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    db.UniqueConstraint(username)
+    db.UniqueConstraint(username, email)
+
+    @property  # Decorator này dùng để tạo ra một thuộc tính giả
+    def password(self):
+        return self.password
+
+    @password.setter
+    def password(self, password):
+        """
+        Hàm này được sử dụng để mã hóa password
+        :param password:
+        :return:
+        """
+        self.password_hashed = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password_correction(self, attempted_password):
+        """
+        Hàm này được sử dụng để kiểm tra password đã được mã hóa có khớp với password người dùng nhập vào hay không
+        :param attempted_password:
+        :return:
+        """
+        return bcrypt.check_password_hash(self.password_hashed, attempted_password)
 
     def __repr__(self):
         return '<User %r>' % self.username

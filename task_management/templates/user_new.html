@@ -1,41 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Add a new User</title>
-    </head>
-    <body>
-        <form action="/users/new" method="post">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" required>
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-            <br>
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email">
-            <br>
-            <label for="phone">Phone:</label>
-            <input type="tel" name="phone" id="phone">
-            <br>
-            <label for="role">Role:</label>
-            <select name="role" id="role">
-                <option
-                        value="admin"
-                >
-                    Admin
-                </option>
-                <option
-                        value="user"
-                        selected
-                >
-                    User
-                </option>
-            </select>
-            <br>
-            <input type="submit" value="Add User">
-        </form>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Add User{% endblock %}
+{% block content %}
+    <form action="/users/new" method="post">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email">
+        <br>
+        <label for="phone">Phone:</label>
+        <input type="tel" name="phone" id="phone">
+        <br>
+        <label for="role">Role:</label>
+        <select name="role" id="role">
+            <option
+                    value="admin"
+            >
+                Admin
+            </option>
+            <option
+                    value="user"
+                    selected
+            >
+                User
+            </option>
+        </select>
+        <br>
+        <input type="submit" value="Add User">
+    </form>
+{% endblock %}
