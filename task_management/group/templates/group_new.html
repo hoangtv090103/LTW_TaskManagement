@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+    Add new group {% endblock %}
+{% block head %}
+    <script>
+        insertUserRow = function (user, username) {
+            var table = document.getElementById('users');
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = '<input type="text" name="new_user">';
+            cell2.innerHTML = '<input type="text" name="new_username">';
+        };
+    </script>
+{% endblock %}
+{% block content %}
+    <form method="POST" class="d-flex flex-column">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }} {{ form.name() }}
+        {{ form.users.label }} {{ form.users() }}
+        {{ form.submit() }}
+    </form>
+{% endblock %}

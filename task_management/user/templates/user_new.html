@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Add User{% endblock %}
+{% block content %}
+    <form method="post" class="d-flex flex-column">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        {{ form.name.label }} {{ form.name() }}
+        {{ form.username.label }} {{ form.username() }}
+        {{ form.password.label }} {{ form.password() }}
+        {{ form.active.label }} {{ form.active() }}
+        {{ form.phone.label }} {{ form.phone() }}
+        {{ form.email.label }} {{ form.email() }}
+        {{ form.role.label }} {{ form.role() }}
+        {{ form.group_id.label }} {{ form.group_id() }}
+        {{ form.submit() }}
+    </form>
+{% endblock %}

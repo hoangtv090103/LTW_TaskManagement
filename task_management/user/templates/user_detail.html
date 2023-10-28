@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ user.name }}
+{% endblock %}
+{% block content %}
+    <button class="btn btn-primary">Edit</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="name">Name: </label>
+                <span class="form-control-static">{{ user.name }}</span>
+                <br/>
+                <label for="username">Username: </label>
+                <span class="form-control-static">{{ user.username }}</span>
+                <br/>
+                <label for="active">Active: </label>
+                <span class="form-control-static">{{ user.active }}</span>
+                <br/>
+                <label for="phone">Phone: </label>
+                <span class="form-control-static">{{ user.phone }}</span>
+                <br/>
+                <label for="email">Email: </label>
+                <span class="form-control-static">{{ user.email }}</span>
+                <br/>
+                <label for="role">Role: </label>
+                <span class="form-control-static">{{ user.role }}</span>
+                <br/>
+                <label for="group_id">Group: </label>
+                <span class="form-control-static">{{ user.group_id }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

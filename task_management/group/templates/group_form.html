@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Group{% endblock %}
+{% block content %}
+    <h1>{{ group.name }}</h1>
+    <label for="name">Name</label>
+    <span id="name">{{ group.name }}</span>
+    <br>
+    <label for="description">Description</label>
+    <span id="description">{{ group.description }}</span>
+    <br>
+    <
+
+    <a href="{{ path('group_new') }}">Create new</a>
+{% endblock %}

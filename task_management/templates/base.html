@@ -16,13 +16,13 @@
         {% block head %}{% endblock %}
     </head>
 
-    <body style="background: #CCC7BF">
+    <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('projects') }}">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('projects.projects') }}">Projects</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('tasks') }}">Tasks</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('settings') }}">Settings</a></li>
                     </ul>
@@ -43,9 +43,21 @@
                         </ul>
                     {% endif %}
                 </div>
-
             </nav>
         </header>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                        <button type="button" class="m1-2 mb-1 btn-close" data-bs-dismiss="alert"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </body>
 </html>

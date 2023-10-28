@@ -1,5 +1,6 @@
-from task_management import db, bcrypt, login_manager
 from flask_login import UserMixin  # UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
+
+from task_management import db, bcrypt, login_manager
 
 group_user = db.Table('group_user',
                       db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True),

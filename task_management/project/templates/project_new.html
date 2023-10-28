@@ -5,13 +5,6 @@
 {% block content %}
     <form method="POST">
         {{ form.hidden_tag() }}
-        {#           name = StringField('Name', validators=[DataRequired()])#}
-        {#    description = StringField('Description')#}
-        {#    sequence = StringField('Sequence')#}
-        {#    manager_id = SelectField('Manager', choices=[#}
-        {#        (id, name) for id, name in db.session.query(User.id, User.name).all()#}
-        {#    ])#}
-        {#    submit = SubmitField('Create Project')#}
         <div class="form-group">
             {{ form.name.label(class="form-control-label") }}
             {% if form.name.errors %}

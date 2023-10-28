@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Projects</h1>
+    <button class="btn btn-primary my-2" onclick="window.location.href='/projects/new'">Create Project</button>
+    <table class="table table-bordered table-hover mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Project Name</th>
+                <th>Project Description</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for project in projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
