@@ -1,45 +1,36 @@
 {% extends 'base.html' %}
 {% block head %}
     <style>
-        div {
-            margin: 6px 0;
-        }
     </style>
 {% endblock %}
 {% block title %}Add User{% endblock %}
 {% block header %}
-    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href='/users'">
-        <span class="glyphicon glyphicon-remove"></span> Discard
-    </button>
+    <button class="btn btn-primary" onclick="window.location.href='/users/{{ user.id }}'">Discard</button>
 {% endblock %}
 {% block content %}
     {% with label_style="width: 100px; font-weight: bold" %}
         <form method="post" class="d-flex flex-column">
-
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
-            <div>
+            <div class="mt-3">
                 {{ form.name.label(style=label_style) }} {{ form.name() }}
             </div>
-            <div>
+            <div class="mt-3">
                 {{ form.username.label(style=label_style) }} {{ form.username() }}
             </div>
-            <div>
-                {{ form.password.label(style=label_style) }} {{ form.password() }}
-            </div>
-            <div>
+            <div class="mt-3">
                 {{ form.active.label(style=label_style) }} {{ form.active() }}
             </div>
-            <div>
+            <div class="mt-3">
                 {{ form.phone.label(style=label_style) }} {{ form.phone() }}
             </div>
-            <div>
+            <div class="mt-3">
                 {{ form.email.label(style=label_style) }} {{ form.email() }}
             </div>
-            <div>
+            <div class="my-3">
                 {{ form.is_admin.label(style=label_style) }} {{ form.is_admin() }}
             </div>
-            {{ form.submit() }}
+                {{ form.submit() }}
         </form>
     {% endwith %}
 {% endblock %}

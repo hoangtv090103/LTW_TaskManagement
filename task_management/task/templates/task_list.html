@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Projects{% endblock %}
+{% block title %}Tasks{% endblock %}
 {% block head %}
     <style>
         a {
@@ -8,32 +8,31 @@
         }
     </style>
 {% endblock %}
-{% block header %}
-    <h1>Projects</h1>
-    <button class="btn btn-primary my-2" onclick="window.location.href='/projects/new'">Create Project</button>
-{% endblock %}
 {% block content %}
+    <h1>Tasks</h1>
+    <button class="btn btn-primary my-2" onclick="window.location.href='/tasks/new'">Create Task</button>
+
     <table class="table table-bordered table-hover mt-4">
         <thead class="thead-dark">
             <tr>
-                <th>Project Name</th>
-                <th>Project Description</th>
+                <th>Task Name</th>
+                <th>Task Description</th>
             </tr>
         </thead>
         <tbody>
-            {% for project in projects %}
+            {% for task in tasks %}
                 <tr>
                     <td>
-                        <a href="/projects/{{ project.id }}">
+                        <a href="/tasks/{{ task.id }}">
                             <div>
-                                {{ project.name }}
+                                {{ task.name }}
                             </div>
                         </a>
                     </td>
                     <td>
-                        <a href="/projects/{{ project.id }}">
+                        <a href="/tasks/{{ task.id }}">
                             <div>
-                                {{ project.description }}
+                                {{ task.description }}
                             </div>
                         </a>
                     </td>
@@ -42,3 +41,4 @@
         </tbody>
     </table>
 {% endblock %}
+

@@ -2,32 +2,44 @@
 {% block title %}
     {{ user.name }}
 {% endblock %}
+{% block header %}
+    <a href="{{ url_for('users.edit_user', id=user.id) }}" class="btn btn-primary">Edit</a>
+    {#    Change password button#}
+    <a href="{{ url_for('users.change_password', id=user.id) }}" class="btn btn-primary">Change password</a>
+    {#    Delete button#}
+    <a href="{{ url_for('users.delete_user', id=user.id) }}" class="btn btn-danger">Delete</a>
+    {#    Back button#}
+{% endblock %}
 {% block content %}
-    <button class="btn btn-primary">Edit</button>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <label for="name">Name: </label>
-                <span class="form-control-static">{{ user.name }}</span>
-                <br/>
-                <label for="username">Username: </label>
-                <span class="form-control-static">{{ user.username }}</span>
-                <br/>
-                <label for="active">Active: </label>
-                <span class="form-control-static">{{ user.active }}</span>
-                <br/>
-                <label for="phone">Phone: </label>
-                <span class="form-control-static">{{ user.phone }}</span>
-                <br/>
-                <label for="email">Email: </label>
-                <span class="form-control-static">{{ user.email }}</span>
-                <br/>
-                <label for="role">Role: </label>
-                <span class="form-control-static">{{ user.role }}</span>
-                <br/>
-                <label for="group_id">Group: </label>
-                <span class="form-control-static">{{ user.group_id }}</span>
-            </div>
-        </div>
+    Name
+    <h1>
+        {{ user.name }}
+    </h1>
+    Username
+    <h2>
+        {{ user.username }}
+    </h2>
+    <div class="mt-2">
+        <label for="email">Email </label>
+        <span id="email">
+            {{ user.email or '' }}
+        </span>
+    </div>
+    <div class="mt-2">
+        <label for="phone">Phone </label>
+        <span id="phone">
+                {{ user.phone or '' }}
+        </span>
+    </div>
+
+    <div class="mt-2">
+        <label for="is_admin">Admin </label>
+        <span id="is_admin">
+                {% if user.is_admin %}
+                    <input type="checkbox" checked disabled>
+                {% else %}
+                    <input type="checkbox" disabled>
+                {% endif %}
+            </span>
     </div>
 {% endblock %}

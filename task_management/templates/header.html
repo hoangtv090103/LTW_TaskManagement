@@ -1,0 +1,21 @@
+<div class="d-flex flex-row justify-content-between align-items-center"
+     style="width: 100%; border: 1px #DBDBDB solid">
+    <div class="font-inter"
+         style="color: #0D062D; font-size: 20px;">
+        TaskManager
+    </div>
+
+    <div class="searchbar p-2 m-1 font-inter rounded-3 w-25"
+         style="background: #F5F5F5;">
+        Search for anything...
+    </div>
+
+
+    <div class="User">
+        <a href="{{ url_for('logout') }}">
+            <div>
+                {{ current_user.name }}
+            </div>
+        </a>
+    </div>
+</div>

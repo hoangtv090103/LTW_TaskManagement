@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block title %} Users {% endblock %}
+{% block header %}
+    <button class="btn btn-primary" onclick="window.location.href='{{ url_for('users.new_user') }}'">Add User</button>
+{% endblock %}
 {% block content %}
-    <button class="btn btn-primary my-2" onclick="window.location.href='{{ url_for('users.new_user') }}'">Add User</button>
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
             <tr>
@@ -15,7 +17,7 @@
                 <tr>
                     <td>
                         <a href="{{ url_for('users.user_by_id', user_id=user.id) }}">
-                            <div>{{ user.name }}</div>
+                            <div>{{ user.name or '' }}</div>
                         </a>
                     </td>
                     <td>
@@ -25,7 +27,7 @@
                     </td>
                     <td>
                         <a href="{{ url_for('users.user_by_id', user_id=user.id) }}">
-                            <div>{{ user.email }}</div>
+                            <div>{{ user.email or '' }}</div>
                         </a>
                     </td>
                 </tr>

@@ -1,0 +1,56 @@
+<div class="w-100" id="content-window">
+    {% if active_project %}
+        <div class="font-inter my-2 p-1" style="border-bottom: 1px solid #e2e8f0; border-radius: 5px; font-size: 40px;">
+            {{ active_project.name }}
+        </div>
+
+        <div class="kanban">
+            <div class="kanban-board">
+                <div id="todo" class="state-box">
+                    <div>
+                        <h4 class="font-inter">To Do</h4>
+                        <button class="btn btn-primary btn-sm" onclick="window.location.href='/tasks/new'" style="font-size: 12px;">
+                            Add Task
+                        </button>
+                    </div>
+                    {% for task in todo %}
+                        <div class="task" draggable="true" id="{{ task.id }}">
+                            <div>
+                                {{ task.name }}
+                                {{ task.id }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="in-progress" class="state-box">
+                    <h4 class="font-inter">In Progress</h4>
+                    <!-- Add a container for the tasks here -->
+                    {% for task in in_progress %}
+                        <div class="task" draggable="true" id="{{ task.id }}">
+                            <div>
+                                {{ task.name }}
+                                {{ task.id }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="done" class="state-box">
+                    <h4 class="font-inter">Done</h4>
+                    <!-- Add a container for the tasks here -->
+                    {% for task in done %}
+                        <div class="task" draggable="true" id="{{ task.id }}">
+                            <div>
+                                {{ task.name }}
+                                {{ task.id }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h3 class="font-inter">
+            No active project
+        </h3>
+    {% endif %}
+</div>

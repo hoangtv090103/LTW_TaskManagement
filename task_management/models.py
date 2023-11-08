@@ -33,6 +33,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+
 class User(db.Model, UserMixin):
     """
     UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
@@ -49,12 +50,13 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     create_uid = db.Column(db.Integer, default=0)
     write_uid = db.Column(db.Integer, default=0)
-    role = db.Column(db.String(100))
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    is_admin = db.Column(db.Boolean, default=False)
     db.UniqueConstraint(username, email)
 
     @property  # Decorator này dùng để tạo ra một thuộc tính giả
     def password(self):
+        if self.password_hashed is not None:
+            return None
         return self.password
 
     @password.setter
@@ -115,6 +117,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     description = db.Column(db.Text)
+    status = db.Column(db.String(100))
     active = db.Column(db.Boolean, default=True)
     sequence = db.Column(db.Integer)
     manager_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -125,6 +128,7 @@ class Project(db.Model):
     create_uid = db.Column(db.Integer, default=0)
     write_uid = db.Column(db.Integer, default=0)
     tasks = db.relationship('Task', backref='project')
+    progress = db.Column(db.Float)
 
     def __repr__(self):
         return '<Project %r>' % self.name
@@ -146,6 +150,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     user_ids = db.relationship('User', secondary=task_user, backref='tasks')
+    status = db.Column(db.String(100))
     name = db.Column(db.String(255))
     description = db.Column(db.Text)
     active = db.Column(db.Boolean, default=True)
