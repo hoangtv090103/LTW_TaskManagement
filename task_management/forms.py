@@ -20,7 +20,7 @@ class RegisterForm(FlaskForm):
     name = StringField('Name')
     username = StringField('Username', validators=[DataRequired()])
     password1 = PasswordField('Password', validators=[DataRequired(), EqualTo('password2')])
-    password2 = PasswordField('Confirm Password', validators=[EqualTo('password1')])
+    password2 = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password1')])
     email = StringField('Email', validators=[Optional(), Email()])
     phone = StringField('Phone')
     submit = SubmitField('Create Account')

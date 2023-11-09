@@ -8,21 +8,13 @@
                 Tasks
             </div>
         </a>
-        <div class="p-1"
-             style="color: #787486; font-size: 16px; font-family: Inter; font-weight: 500; word-wrap: break-word">
-            Messages
-        </div>
-
-        <div class="p-1"
-             style="color: #787486; font-size: 16px; font-family: Inter; font-weight: 500; word-wrap: break-word">
-            Members
-        </div>
-        <a href="{{ url_for('settings') }}">
-
-            <div class="p-1 font-inter" style="color: #787486;">
-                Settings
-            </div>
-        </a>
+        {% if current_user.is_admin %}
+            <a href="{{ url_for('users') }}">
+                <div class="p-1 font-inter" style="color: #787486;">
+                    Users
+                </div>
+            </a>
+        {% endif %}
     </div>
     <div class="Vector8" style="width: 224px; height: 0px; border: 1px #DBDBDB solid"></div>
     <div class="ProjectSection" style="width: 247px; height: 524px;">
@@ -62,33 +54,5 @@
 
             {% endfor %}
         </div>
-
-        {#        <div class="Ellipse20"#}
-        {#             style="width: 33px; height: 33px; left: 108px; top: 307px; position: absolute; background: rgba(252, 214, 74, 0.70); box-shadow: 34px 34px 34px; border-radius: 9999px; filter: blur(34px)"></div>#}
-        {#        <div class="Rectangle1076"#}
-        {#             style="width: 166px; height: 40px; left: 42px; top: 464px; position: absolute; background: white; border-radius: 4px"></div>#}
-        {#        <div class="WriteAMessage"#}
-        {#             style="left: 69px; top: 476px; position: absolute; color: black; font-size: 14px; font-family: Inter; font-weight: 500; word-wrap: break-word">#}
-        {#            Write a message#}
-        {#        </div>#}
-        {#        <div class="VuesaxBulkLampOn"#}
-        {#             style="width: 24px; height: 24px; left: 113px; top: 312px; position: absolute; justify-content: center; align-items: center; display: inline-flex">#}
-        {#            <div class="LampOn" style="width: 24px; height: 24px; position: relative">#}
-        {#                <div class="Vector"#}
-        {#                     style="width: 16.07px; height: 17.21px; left: 3.97px; top: 2px; position: absolute; background: #FBCB18"></div>#}
-        {#                <div class="Vector"#}
-        {#                     style="width: 7.92px; height: 1.85px; left: 8.05px; top: 20.15px; position: absolute; background: #FBCB18"></div>#}
-        {#                <div class="Vector"#}
-        {#                     style="width: 24px; height: 24px; left: 0px; top: 0px; position: absolute; opacity: 0"></div>#}
-        {#            </div>#}
-        {#        </div>#}
-        {#        <div class="ThoughtsTime"#}
-        {#             style="left: 75px; top: 361px; position: absolute; color: black; font-size: 14px; font-family: Inter; font-weight: 500; word-wrap: break-word">#}
-        {#            Thoughts Time#}
-        {#        </div>#}
-        {#        <div class="WeDonTHaveAnyNoticeForYouTillThenYouCanShareYourThoughtsWithYourPeers"#}
-        {#             style="width: 166px; left: 42px; top: 390px; position: absolute; text-align: center; color: #787486; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">#}
-        {#            We don’t have any notice for you, till then you can share your thoughts with your peers.#}
-        {#        </div>#}
     </div>
 </div>

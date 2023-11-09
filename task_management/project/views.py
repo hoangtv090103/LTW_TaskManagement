@@ -35,7 +35,8 @@ def project_by_id(project_id):
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     project = db.get_or_404(Project, ident=project_id)
-    session['project_id'] = project_id
+    session['active_project_id'] = project_id
+    session.pop('active_task_id', None)
     return redirect(url_for('index'))
 
 

@@ -1,26 +1,9 @@
+from datetime import timedelta, date
+
 from flask_login import UserMixin  # UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
+from flask_mail import Message
 
-from task_management import db, bcrypt, login_manager
-
-group_user = db.Table('group_user',
-                      db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True),
-                      db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
-                      )
-
-
-class Group(db.Model):
-    __tablename__ = 'group'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    create_uid = db.Column(db.Integer, default=0)
-    write_uid = db.Column(db.Integer, default=0)
-    users = db.relationship('User', secondary=group_user, backref='groups')
-    access_rights = db.relationship('AccessRight', backref='group')
-
-    def __repr__(self):
-        return '<Group %r>' % self.name
+from task_management import db, bcrypt, login_manager, mail, scheduler, app
 
 
 @login_manager.user_loader
@@ -31,7 +14,6 @@ def load_user(user_id):
     :return:
     """
     return User.query.get(int(user_id))
-
 
 
 class User(db.Model, UserMixin):
@@ -80,38 +62,6 @@ class User(db.Model, UserMixin):
         return '<User %r>' % self.username
 
 
-class AccessRight(db.Model):
-    __tablename__ = 'access_right'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    model = db.Column(db.String(100))
-    create_perm = db.Column(db.Boolean, default=False)
-    write_perm = db.Column(db.Boolean, default=False)
-    delete_perm = db.Column(db.Boolean, default=False)
-    read_perm = db.Column(db.Boolean, default=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    create_uid = db.Column(db.Integer, default=0)
-    write_uid = db.Column(db.Integer, default=0)
-
-    def __repr__(self):
-        return '<AccessRight %r>' % self.name
-
-
-class Tag(db.Model):
-    __tablename__ = 'tag'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    create_uid = db.Column(db.Integer, default=0)
-    write_uid = db.Column(db.Integer, default=0)
-
-    def __repr__(self):
-        return '<Tag %r>' % self.name
-
-
 class Project(db.Model):
     __tablename__ = 'project'
     id = db.Column(db.Integer, primary_key=True)
@@ -134,22 +84,11 @@ class Project(db.Model):
         return '<Project %r>' % self.name
 
 
-task_tag = db.Table('task_tag',
-                    db.Column('task_id', db.Integer, db.ForeignKey('task.id'), primary_key=True),
-                    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
-                    )
-
-task_user = db.Table('task_user',
-                     db.Column('task_id', db.Integer, db.ForeignKey('task.id'), primary_key=True),
-                     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
-                     )
-
-
 class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-    user_ids = db.relationship('User', secondary=task_user, backref='tasks')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     status = db.Column(db.String(100))
     name = db.Column(db.String(255))
     description = db.Column(db.Text)
@@ -160,9 +99,26 @@ class Task(db.Model):
     date_end = db.Column(db.Date)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    create_uid = db.Column(db.Integer, default=0)
-    write_uid = db.Column(db.Integer, default=0)
-    tag_ids = db.relationship('Tag', secondary=task_tag, backref='tasks')
 
     def __repr__(self):
         return '<Task %r>' % self.name
+
+
+def reminder():
+    with app.app_context():
+        tasks = Task.query.filter_by(date_end=date.today() + timedelta(days=1)).all()
+        for task in tasks:
+            user = User.query.get(task.user_id)
+            message = Message(
+                subject=f'Task reminder from Task Management',
+                recipients=[user.email],
+                sender='tranh459789@gmail.com'
+            )
+            message.body = f'Hello {user.name},\n You have a task to complete: {task.name}\nDue date: {task.date_end}'
+            mail.send(message)
+
+
+# convert to local time
+scheduler.add_job(id='Scheduled task', func=reminder, trigger='cron', hour=0, minute=0, second=0, day_of_week='mon-sun',
+                  timezone='Asia/Ho_Chi_Minh')
+scheduler.start()

@@ -1,51 +1,145 @@
 <div class="w-100" id="content-window">
-    {% if active_project %}
-        <div class="font-inter my-2 p-1" style="border-bottom: 1px solid #e2e8f0; border-radius: 5px; font-size: 40px;">
-            {{ active_project.name }}
+    {% if active_task %}
+        <div class="font-inter my-2 p-1 d-flex justify-content-between align-items-bottom"
+             style="border-bottom: 1px solid #e2e8f0; border-radius: 5px; font-size: 40px;">
+            <h2 class="font-inter">{{ active_task.name }}</h2>
+
+        </div>
+        <div class="d-flex justify-content-between">
+            {% if mode != 'edit' %}
+                <button class="btn btn-primary btn-sm" onclick="editTask({{ active_task.id }})">
+                    Edit Task
+                </button>
+            {% else %}
+                <div class="m-1">
+                    <button class="btn btn-primary btn-sm" type="submit" onclick="saveTask({{ active_task.id }})">
+                        Save Task
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="window.location.href='/tasks/{{ active_task.id }}'">
+                        Cancel
+                    </button>
+                </div>
+            {% endif %}
+            <div>
+                <button id="todo" class="btn {% if active_task.status == 'todo' %} btn-primary {% endif %} btn-sm"
+                        onclick="updateTaskStatus({{ active_task.id }}, 'todo')">
+                    To Do
+                </button>
+                <button id="in-progress"
+                        class="btn {% if active_task.status == 'in-progress' %} btn-primary {% endif %} btn-sm"
+                        onclick="updateTaskStatus({{ active_task.id }}, 'in-progress')">
+                    In Progress
+                </button>
+                <button id="done" class="btn {% if active_task.status == 'done' %} btn-primary {% endif %} btn-sm"
+                        onclick="updateTaskStatus({{ active_task.id }}, 'done')">
+                    Done
+                </button>
+
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-6 d-flex flex-column">
+                <div>
+                    <label for="name">Task Name:</label>
+                    <input type="text" id="name" name="name" value="{{ active_task.name }}" {% if mode != 'edit' %}
+                           disabled {% endif %}/>
+                </div>
+                <div>
+                    <label for="active">Active:</label>
+                    <input type="checkbox" id="active" name="active" {% if active_task.active %}
+                           checked {% endif %} {% if mode != 'edit' %} disabled {% endif %}/>
+                </div>
+                <div>
+                    <label for="priority">Priority:</label>
+                    <select id="priority" name="priority" {% if mode != 'edit' %} disabled {% endif %}>
+                        <option value="low" {% if active_task.priority == 'low' %} selected {% endif %}>Low</option>
+                        <option value="medium" {% if active_task.priority == 'medium' %} selected {% endif %}>Medium
+                        </option>
+                        <option value="high" {% if active_task.priority == 'high' %} selected {% endif %}>High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-6 d-flex flex-column">
+                <div>
+                    <label for="project_id">Project:</label>
+                    <select id="project_id" name="project_id" {% if mode != 'edit' %} disabled {% endif %}>
+                        {% for project in projects %}
+                            <option value="{{ project.id }}" {% if active_task.project_id == project.id %} selected
+                                    {% endif %}>{{ project.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" {% if mode != 'edit' %} disabled {% endif %}>
+                        <option value="todo" {% if active_task.status == 'todo' %} selected {% endif %}>To Do</option>
+                        <option value="in-progress" {% if active_task.status == 'in-progress' %} selected {% endif %}>
+                            In Progress
+                        </option>
+                        <option value="done" {% if active_task.status == 'done' %} selected {% endif %}>Done</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="date_start">Start Date:</label>
+                    <input type="date" id="date_start" name="date_start" value="{{ active_task.date_start }}"
+                            {% if mode != 'edit' %} disabled {% endif %}/>
+                </div>
+                <div>
+                    <label for="date_end">Due Date:</label>
+                    <input type="date" id="date_end" name="date_end" value="{{ active_task.date_end }}"
+                            {% if mode != 'edit' %} disabled {% endif %}/>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-2 p-2 border border-2 rounded-3" id="description" contenteditable="{{ mode == 'edit' }}">
+            {{ active_task.description or 'Description' }}
+        </div>
+
+
+    {% elif active_project %}
+        <div class="font-inter my-2 p-1 d-flex justify-content-between align-items-bottom"
+             style="border-bottom: 1px solid #e2e8f0; border-radius: 5px; font-size: 40px;">
+            <h2 class="font-inter">{{ active_project.name }}</h2>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='/tasks/new'">
+                Add Task
+            </button>
         </div>
 
         <div class="kanban">
             <div class="kanban-board">
-                <div id="todo" class="state-box">
-                    <div>
-                        <h4 class="font-inter">To Do</h4>
-                        <button class="btn btn-primary btn-sm" onclick="window.location.href='/tasks/new'" style="font-size: 12px;">
-                            Add Task
-                        </button>
+                {% for state, tasks in task_list.items() %}
+                    <div class="state-box">
+                        <div class="state-title text-capitalize">
+                            <h4 class="font-inter">{{ state.replace('-', ' ') }} ({{ tasks|length }})</h4>
+                        </div>
+                        <hr/>
+                        <div id="{{ state }}" class="task-box d-flex flex-column">
+                            {% for task in tasks %}
+                                <div class="task" id="{{ task.id }}">
+                                    <a href="/tasks/{{ task.id }}">
+
+                                        <div>
+                                            {{ task.name }}
+                                        </div>
+                                    </a>
+                                    <div>
+                                        <label>Description:</label>{{ task.description or '' }}
+                                    </div>
+                                    <div>
+                                        <label>Due Date:</label> {{ task.date_end }}
+                                    </div>
+                                    <div>
+                                        <label>Priority:</label> {{ task.priority }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    {% for task in todo %}
-                        <div class="task" draggable="true" id="{{ task.id }}">
-                            <div>
-                                {{ task.name }}
-                                {{ task.id }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div id="in-progress" class="state-box">
-                    <h4 class="font-inter">In Progress</h4>
-                    <!-- Add a container for the tasks here -->
-                    {% for task in in_progress %}
-                        <div class="task" draggable="true" id="{{ task.id }}">
-                            <div>
-                                {{ task.name }}
-                                {{ task.id }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div id="done" class="state-box">
-                    <h4 class="font-inter">Done</h4>
-                    <!-- Add a container for the tasks here -->
-                    {% for task in done %}
-                        <div class="task" draggable="true" id="{{ task.id }}">
-                            <div>
-                                {{ task.name }}
-                                {{ task.id }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% endfor %}
             </div>
         </div>
     {% else %}
