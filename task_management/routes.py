@@ -1,8 +1,20 @@
+from functools import wraps
+
 from flask import redirect, url_for, render_template, flash, session
 from flask_login import login_user, current_user, logout_user
 
 from task_management.forms import *
 from task_management.models import *
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+
+    return decorated_function
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -34,7 +46,7 @@ def login():
         attempted_user = User.query.filter_by(username=form.username.data).first()
         if attempted_user and attempted_user.check_password_correction(attempted_password=form.password.data):
             login_user(attempted_user)  # Lệnh này sẽ lưu thông tin user vào session
-            return redirect(url_for('index'))
+            return index()
     return render_template('login.html', form=form)
 
 
@@ -45,60 +57,21 @@ def logout():
 
 
 @app.route('/')
-def index():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
+@login_required
+def index(project_id=None, task_list=None, task_id=None):
     projects = Project.query.filter(Project.manager_id == current_user.id).all()
-    active_project = False
-    active_task = False
-    task_list = False
-    create_uid = False
     mode = session.get('mode', '')
-    keyword = session.get('keyword', '')
-
-    if session.get('active_task_id'):
-        active_task = Task.query.get(session.get('active_task_id'))
-        create_uid = User.query.get(active_task.user_id)
-
-    elif session.get('active_project_id'):
-        session.pop('active_task_id', None)
-        active_project = Project.query.get(session.get('active_project_id'))
-        create_uid = User.query.get(active_project.manager_id)
-
-        todo = Task.query.filter(Task.project_id == active_project.id, Task.status == 'todo')
-        in_progress = Task.query.filter(Task.project_id == active_project.id, Task.status == 'in-progress')
-        done = Task.query.filter(Task.project_id == active_project.id, Task.status == 'done')
-
-        if keyword:
-            keyword = keyword.strip().lower()
-            todo = todo.filter(Task.name.like(f'%{keyword}%'))
-            in_progress = in_progress.filter(Task.name.like(f'%{keyword}%'))
-            done = done.filter(Task.name.like(f'%{keyword}%'))
-
-        todo = todo.all()
-        in_progress = in_progress.all()
-        done = done.all()
-
-        todo.sort(key=lambda x: x.priority, reverse=True)
-        in_progress.sort(key=lambda x: x.priority, reverse=True)
-        done.sort(key=lambda x: x.priority, reverse=True)
-
-        task_list = {'todo': todo,
-                     'in-progress': in_progress,
-                     'done': done}
-    session.pop('keyword', None)
-
+    if session.get('active_project_id'):
+        project_id = Project.query.get(session.get('active_project_id'))
     return render_template('index.html',
                            projects=projects,
-                           active_project=active_project,
-                           active_task=active_task,
-                           create_uid=create_uid,
                            mode=mode,
+                           active_project_id=project_id,
+                           task_id=task_id,
                            task_list=task_list)
 
 
 @app.route('/settings')
+@login_required
 def settings():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
     return render_template('settings.html')

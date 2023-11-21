@@ -1,56 +1,53 @@
-<div class="Sidebar" style="width: 250px; border-right: 1px #DBDBDB solid">
-    <div class="NavigationSection d-flex flex-column justify-content-between m-2">
-        <div class="p-1 font-inter" style="color: #787486;">
+<div class="sidebar box-shadow">
+    <div class="d-flex flex-column justify-content-between p-2"
+         style="border-bottom: 1px solid #dddddd">
+        <div class="sidebar-item">
             Home
         </div>
         <a href="{{ url_for('tasks.tasks') }}">
-            <div class="p-1 font-inter" style="color: #787486;">
+            <div class="sidebar-item">
                 Tasks
             </div>
         </a>
         {% if current_user.is_admin %}
             <a href="{{ url_for('users') }}">
-                <div class="p-1 font-inter" style="color: #787486;">
+                <div class="sidebar-item">
                     Users
                 </div>
             </a>
         {% endif %}
     </div>
-    <div class="Vector8" style="width: 224px; height: 0px; border: 1px #DBDBDB solid"></div>
-    <div class="ProjectSection" style="width: 247px; height: 524px;">
-        <!-- Thông báo -->
-        <!-- <img class="Union" style="width: 206px; height: 233px; left: 22px; top: 291px; position: absolute" -->
-        <!-- {#             src="https://via.placeholder.com/206x233"/>#} -->
+    <div class="sidebar-content">
+        {#        Thông báo#}
+        {#        <img class="Union" style="width: 206px; height: 233px; left: 22px; top: 291px; position: absolute"#}
+        {#             src="https://via.placeholder.com/206x233"/>#}
 
 
-        <div id="my-projects" class="m-1 p-1 d-flex justify-content-between"
-             style="color: #787486; font-size: 12px; text-transform: uppercase">
-            my projects
+        <div id="my-projects" class="m-1 p-1 d-flex justify-content-between sidebar-content-header">
+            <span>my projects</span>
             <a href="{{ url_for('projects.new_project') }}">
-                <span class="add-project border border-primary p-1 rounded-2" style="width: auto">
+                <span class="add-project border border-primary py-1 px-2 rounded-2">
                     +
                 </span>
             </a>
         </div>
 
-        <div class="Projects" style="height: 16px;" class="d-flex flex-column">
-            {#            add project button#}
+        <div class="project-list">
             {% for project in projects %}
-
-                <button class="sidebar-project-button w-100"
-                        style="background: rgba(80, 48, 229, 0.08); border-radius: 6px"
-                        onclick="window.location.href='{{ url_for('projects.project_by_id', project_id=project.id) }}'">
-                    <div class="project d-flex justify-content-between p-1 m-1"
-                         style="background: rgba(80, 48, 229, 0.08); border-radius: 6px">
-                        <div class="project-name font-inter" style="color: #0D062D;">
-                            {{ project.name }}
-                        </div>
-                        <div style="color: #0D062D; font-size: 16px; font-family: Inter; font-weight: 800; word-wrap: break-word"
-                             class="d-flex align-items-center">
-                            . . .
-                        </div>
+                {% if project.id == session.active_project_id %}
+                    <div class="project-item active"
+                         onclick="window.location.href='{{ url_for('projects.project_by_id', project_id=project.id) }}'">
+                        <p>{{ project.name }}</p>
+                        <span>...</span>
                     </div>
-                </button>
+
+                {% else %}
+                    <div class="project-item"
+                         onclick="window.location.href='{{ url_for('projects.project_by_id', project_id=project.id) }}'">
+                        <p>{{ project.name }}</p>
+                        <span>...</span>
+                    </div>
+                {% endif %}
 
             {% endfor %}
         </div>

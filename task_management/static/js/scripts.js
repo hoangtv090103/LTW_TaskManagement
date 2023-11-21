@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Sortable.js on the kanban board
-    const taskBoxes = document.querySelectorAll(".task-box");
+    const taskBoxes = document.querySelectorAll(".project-detail");
     const options = {
         group: "shared",
         animation: 150,
@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tasks.forEach((task) => {
             task.setAttribute("draggable", true);
             task.addEventListener("dragstart", function (e) {
+                console.log('dragging')
                 e.dataTransfer.setData("text", e.target.id);
             });
             task.addEventListener("dragend", function (e) {

@@ -1,28 +1,42 @@
 from datetime import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, flash, session
+from flask import Blueprint, render_template, flash, session
 from flask import jsonify, request
 from flask_login import current_user
 
 from task_management import db
 from task_management.models import Task
+from task_management.routes import index, login_required
 from task_management.task.forms import TaskForm
 
 task_blueprint = Blueprint('tasks', __name__, template_folder='templates', static_folder='static')
 
 
+def get_task_list(tasks):
+    task_list = {
+        'todo': [task for task in tasks if task.status == 'todo'],
+        'in-progress': [task for task in tasks if task.status == 'in-progress'],
+        'done': [task for task in tasks if task.status == 'done']
+    }
+    return task_list
+
+
 @task_blueprint.route('/')
+@login_required
 def tasks():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
-    tasks = Task.query.all()
-    return render_template('task_list.html', tasks=tasks, view_type='list')
+    all_task = Task.query.all()
+    task_list = {
+        'todo': [task for task in all_task if task.status == 'todo'],
+        'in-progress': [task for task in all_task if task.status == 'in-progress'],
+        'done': [task for task in all_task if task.status == 'done']
+    }
+
+    return index(task_list=task_list)
 
 
 @task_blueprint.route('/new', methods=['POST', 'GET'])
+@login_required
 def new_task():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
     form = TaskForm()
     if form.validate_on_submit():
         task = Task(name=form.name.data, description=form.description.data,
@@ -31,7 +45,7 @@ def new_task():
                     date_end=form.date_end.data, user_id=current_user.id)
         db.session.add(task)
         db.session.commit()
-        return redirect(url_for('index'))
+        return index()
     if form.errors != {}:
         for err_msg in form.errors.values():
             flash(f'There was an error with creating a task: {err_msg}', category='danger')
@@ -39,23 +53,20 @@ def new_task():
 
 
 @task_blueprint.route('/<int:task_id>')
+@login_required
 def task_by_id(task_id: int):
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
     task = Task.query.get(task_id)
-    session['active_task_id'] = task_id
-    return redirect(url_for('index'))
+    return index(task_id=task)
 
 
-# `/tasks/${taskId}/edit
 @task_blueprint.route('/<int:task_id>/edit', methods=['POST', 'GET', 'PUT'])
+@login_required
 def edit_task(task_id):
     if request.method == 'PUT':
         data = request.get_json()
         task_id = data.get('taskId')
         new_status = data.get('newState')
 
-        # Update the task status in your database
         task = Task.query.get(task_id)
         if task:
             task.status = new_status
@@ -67,12 +78,12 @@ def edit_task(task_id):
     elif request.method == 'POST':
         session['active_task_id'] = task_id
         session['mode'] = 'edit'
-        return redirect(url_for('index'))
+        return index()
     else:
         return jsonify({"error": "Method not allowed"}, 405)
 
 
-def is_change(task=None, data=None):
+def is_changed(task=None, data=None):
     if task.name != data.get('name'):
         return True
     if task.description != data.get('description'):
@@ -93,6 +104,7 @@ def is_change(task=None, data=None):
 
 
 @task_blueprint.route('/<int:task_id>/save', methods=['POST'])
+@login_required
 def save_task(task_id):
     if request.method == 'POST':
         session.pop('mode', None)
@@ -100,11 +112,11 @@ def save_task(task_id):
         data.update({
             'date_start': datetime.strptime(data.get('date_start'), '%Y-%m-%d').date(),
             'date_end': datetime.strptime(data.get('date_end'), '%Y-%m-%d').date(),
-        })  # Update the task status in your database
+        })
         task = Task.query.get(task_id)
         if not task:
             return jsonify({"error": "Task not found"}, 404)
-        if is_change(task, data):
+        if is_changed(task, data):
             task.name = data.get('name')
             task.description = data.get('description')
             task.priority = data.get('priority')
@@ -113,10 +125,11 @@ def save_task(task_id):
             task.date_end = data.get('date_end')
             task.project_id = data.get('project_id')
             db.session.commit()
-        return redirect(url_for('index'))
+        return index()
 
 
 @task_blueprint.route('/<int:task_id>/delete', methods=['POST', 'GET', 'DELETE'])
+@login_required
 def delete_task(task_id):
     if request.method == 'DELETE':
         task = Task.query.get(task_id)
@@ -129,16 +142,20 @@ def delete_task(task_id):
     elif request.method == 'POST':
         session['active_task_id'] = task_id
         session.pop('mode', None)
-        return redirect(url_for('index'))
+        return index()
     else:
         return jsonify({"error": "Method not allowed"}, 405)
 
 
 @task_blueprint.route('/search', methods=['POST'])
+@login_required
 def search():
     if request.method == 'POST':
         keyword = request.get_json().get('keyword')
-        session['keyword'] = keyword
-        return redirect(url_for('index'))
+        if session.get('active_project_id'):
+            project_id = session.get('active_project_id')
+            tasks = Task.query.filter(Task.project_id == project_id).all()
+            task_list = get_task_list(tasks)
+        return index(task_list=task_list)
     else:
         return jsonify({"error": "Method not allowed"}, 405)

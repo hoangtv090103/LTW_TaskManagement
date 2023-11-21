@@ -1,37 +1,35 @@
-<div class="w-100" id="content-window">
-    {% if active_task %}
-        <div class="font-inter my-2 p-1 d-flex justify-content-between align-items-bottom"
-             style="border-bottom: 1px solid #e2e8f0; border-radius: 5px; font-size: 40px;">
-            <h2 class="font-inter">{{ active_task.name }}</h2>
-
+<div class="content" id="content-window">
+    {% if task_id != None %}
+        <div class="content-header">
+            <h2>{{ task_id.name }}</h2>
         </div>
         <div class="d-flex justify-content-between">
             {% if mode != 'edit' %}
-                <button class="btn btn-primary btn-sm" onclick="editTask({{ active_task.id }})">
+                <button class="btn btn-primary btn-sm" onclick="editTask({{ task_id.id }})">
                     Edit Task
                 </button>
             {% else %}
                 <div class="m-1">
-                    <button class="btn btn-primary btn-sm" type="submit" onclick="saveTask({{ active_task.id }})">
+                    <button class="btn btn-primary btn-sm" type="submit" onclick="saveTask({{ task_id.id }})">
                         Save Task
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="window.location.href='/tasks/{{ active_task.id }}'">
+                    <button class="btn btn-danger btn-sm" onclick="window.location.href='/tasks/{{ task_id.id }}'">
                         Cancel
                     </button>
                 </div>
             {% endif %}
             <div>
-                <button id="todo" class="btn {% if active_task.status == 'todo' %} btn-primary {% endif %} btn-sm"
-                        onclick="updateTaskStatus({{ active_task.id }}, 'todo')">
+                <button id="todo" class="btn {% if task_id.status == 'todo' %} btn-primary {% endif %} btn-sm"
+                        onclick="updateTaskStatus('{{ task_id.id }}', 'todo')">
                     To Do
                 </button>
                 <button id="in-progress"
-                        class="btn {% if active_task.status == 'in-progress' %} btn-primary {% endif %} btn-sm"
-                        onclick="updateTaskStatus({{ active_task.id }}, 'in-progress')">
+                        class="btn {% if task_id.status == 'in-progress' %} btn-primary {% endif %} btn-sm"
+                        onclick="updateTaskStatus('{{ task_id.id }}', 'in-progress')">
                     In Progress
                 </button>
-                <button id="done" class="btn {% if active_task.status == 'done' %} btn-primary {% endif %} btn-sm"
-                        onclick="updateTaskStatus({{ active_task.id }}, 'done')">
+                <button id="done" class="btn {% if task_id.status == 'done' %} btn-primary {% endif %} btn-sm"
+                        onclick="updateTaskStatus('{{ task_id.id }}', 'done')">
                     Done
                 </button>
 
@@ -43,21 +41,21 @@
             <div class="col-6 d-flex flex-column">
                 <div>
                     <label for="name">Task Name:</label>
-                    <input type="text" id="name" name="name" value="{{ active_task.name }}" {% if mode != 'edit' %}
+                    <input type="text" id="name" name="name" value="{{ task_id.name }}" {% if mode != 'edit' %}
                            disabled {% endif %}/>
                 </div>
                 <div>
                     <label for="active">Active:</label>
-                    <input type="checkbox" id="active" name="active" {% if active_task.active %}
+                    <input type="checkbox" id="active" name="active" {% if task_id.active %}
                            checked {% endif %} {% if mode != 'edit' %} disabled {% endif %}/>
                 </div>
                 <div>
                     <label for="priority">Priority:</label>
                     <select id="priority" name="priority" {% if mode != 'edit' %} disabled {% endif %}>
-                        <option value="low" {% if active_task.priority == 'low' %} selected {% endif %}>Low</option>
-                        <option value="medium" {% if active_task.priority == 'medium' %} selected {% endif %}>Medium
+                        <option value="low" {% if task_id.priority == 'low' %} selected {% endif %}>Low</option>
+                        <option value="medium" {% if task_id.priority == 'medium' %} selected {% endif %}>Medium
                         </option>
-                        <option value="high" {% if active_task.priority == 'high' %} selected {% endif %}>High</option>
+                        <option value="high" {% if task_id.priority == 'high' %} selected {% endif %}>High</option>
                     </select>
                 </div>
             </div>
@@ -67,61 +65,58 @@
                     <label for="project_id">Project:</label>
                     <select id="project_id" name="project_id" {% if mode != 'edit' %} disabled {% endif %}>
                         {% for project in projects %}
-                            <option value="{{ project.id }}" {% if active_task.project_id == project.id %} selected
-                                    {% endif %}>{{ project.name }}</option>
+                            <option value="{{ project.id }}" {% if task_id.project_id == project.id %} selected
+                            {% endif %}>{{ project.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div>
                     <label for="status">Status:</label>
                     <select id="status" name="status" {% if mode != 'edit' %} disabled {% endif %}>
-                        <option value="todo" {% if active_task.status == 'todo' %} selected {% endif %}>To Do</option>
-                        <option value="in-progress" {% if active_task.status == 'in-progress' %} selected {% endif %}>
+                        <option value="todo" {% if task_id.status == 'todo' %} selected {% endif %}>To Do</option>
+                        <option value="in-progress" {% if task_id.status == 'in-progress' %} selected {% endif %}>
                             In Progress
                         </option>
-                        <option value="done" {% if active_task.status == 'done' %} selected {% endif %}>Done</option>
+                        <option value="done" {% if task_id.status == 'done' %} selected {% endif %}>Done</option>
                     </select>
                 </div>
                 <div>
                     <label for="date_start">Start Date:</label>
-                    <input type="date" id="date_start" name="date_start" value="{{ active_task.date_start }}"
+                    <input type="date" id="date_start" name="date_start" value="{{ task_id.date_start }}"
                             {% if mode != 'edit' %} disabled {% endif %}/>
                 </div>
                 <div>
                     <label for="date_end">Due Date:</label>
-                    <input type="date" id="date_end" name="date_end" value="{{ active_task.date_end }}"
+                    <input type="date" id="date_end" name="date_end" value="{{ task_id.date_end }}"
                             {% if mode != 'edit' %} disabled {% endif %}/>
                 </div>
             </div>
         </div>
 
         <div class="m-2 p-2 border border-2 rounded-3" id="description" contenteditable="{{ mode == 'edit' }}">
-            {{ active_task.description or 'Description' }}
+            {{ task_id.description or 'Description' }}
         </div>
 
 
-    {% elif active_project %}
-        <div class="font-inter my-2 p-1 d-flex justify-content-between align-items-bottom"
-             style="border-bottom: 1px solid #e2e8f0; border-radius: 5px; font-size: 40px;">
-            <h2 class="font-inter">{{ active_project.name }}</h2>
-            <button class="btn btn-primary btn-sm" onclick="window.location.href='/tasks/new'">
+    {% elif task_list != None %}
+        <div class="content-header">
+            <h2>{{ active_project_id.name }}</h2>
+            <button class="btn" onclick="window.location.href='/tasks/new'">
                 Add Task
             </button>
         </div>
 
-        <div class="kanban">
-            <div class="kanban-board">
-                {% for state, tasks in task_list.items() %}
-                    <div class="state-box">
-                        <div class="state-title text-capitalize">
-                            <h4 class="font-inter">{{ state.replace('-', ' ') }} ({{ tasks|length }})</h4>
-                        </div>
-                        <hr/>
-                        <div id="{{ state }}" class="task-box d-flex flex-column">
-                            {% for task in tasks %}
-                                <div class="task" id="{{ task.id }}">
+        <div class="project">
+            {% for state, tasks in task_list.items() %}
+                <div class="project-col">
+                    <div class="project-header">
+                        <h4>{{ state.replace('-', ' ') }} ({{ tasks|length }})</h4>
+                    </div>
+                    <div id="{{ state }}" class="project-detail">
+                        {% for task in tasks %}
+                            <div class="task" id="{{ task.id }}">
+                                <div class="task-box">
                                     <a href="/tasks/{{ task.id }}">
-
                                         <div>
                                             {{ task.name }}
                                         </div>
@@ -136,14 +131,14 @@
                                         <label>Priority:</label> {{ task.priority }}
                                     </div>
                                 </div>
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     {% else %}
-        <h3 class="font-inter">
+        <h3 class="font-inter p-2">
             No active project
         </h3>
     {% endif %}
