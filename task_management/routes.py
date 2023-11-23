@@ -70,6 +70,10 @@ def index(project_id=None, task_list=None, task_id=None):
                            task_id=task_id,
                            task_list=task_list)
 
+@app.route('/home')
+@login_required
+def home():
+    return render_template('home.html')
 
 @app.route('/settings')
 @login_required
