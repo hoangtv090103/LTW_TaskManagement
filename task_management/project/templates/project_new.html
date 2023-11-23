@@ -1,66 +1,74 @@
 {% extends 'base.html' %}
 {% block title %}
-    Add new Project
+    Create new Project
 {% endblock %}
 {% block content %}
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.name.label(class="form-control-label") }}
-            {% if form.name.errors %}
-                {{ form.name(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.name.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form.name(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-        <div class="form-group">
-            {{ form.description.label(class="form-control-label") }}
-            {% if form.description.errors %}
-                {{ form.description(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.description.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form.description(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-        <div class="form-group">
-            {{ form.sequence.label(class="form-control-label") }}
-            {% if form.sequence.errors %}
-                {{ form.sequence(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.sequence.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form.sequence(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-        <div class="form-group">
-            {{ form.manager_id.label(class="form-control-label") }}
-            {% if form.manager_id.errors %}
-                {{ form.manager_id(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.manager_id.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form.manager_id(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-        <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
-        </div>
-    </form>
+    <div class="box">
+        <div class="box-content">
+            <div class="w-50">
+                <h1 class="text-center mt-4 mb-2">Create new project</h1>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="form-line">
+                        {{ form.name.label(class="form-control-label") }}
+                        {% if form.name.errors %}
+                            {{ form.name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.name(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-line">
+                        {{ form.description.label(class="form-control-label") }}
+                        {% if form.description.errors %}
+                            {{ form.description(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.description.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.description(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-line">
+                        {{ form.sequence.label(class="form-control-label") }}
+                        {% if form.sequence.errors %}
+                            {{ form.sequence(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.sequence.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.sequence(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-line">
+                        {{ form.manager_id.label(class="form-control-label") }}
+                        {% if form.manager_id.errors %}
+                            {{ form.manager_id(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.manager_id.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.manager_id(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-line">
+                        {{ form.submit(class="submit") }}
+                    </div>
+                </form>
+            </div>
 
+        </div>
+
+    </div>
 {% endblock %}
 ```

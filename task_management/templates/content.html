@@ -115,6 +115,9 @@
                     <div id="{{ state }}" class="project-detail">
                         {% for task in tasks %}
                             <div class="task" id="{{ task.id }}">
+                             <button class="btn btn-primary btn-sm" onclick="window.location.href='/tasks/{{ task_id.id }}/delete'">
+                                Delete
+                             </button>
                                 <div class="task-box">
                                     <a href="{{ url_for('tasks.task_by_id', task_id=task.id) }}">
                                         <div class="task-name">
