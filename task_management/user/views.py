@@ -85,6 +85,19 @@ def delete_user(id):
         db.session.rollback()
         return redirect(url_for('users.users'))
 
+@user_blueprint.route('/profile', methods=['POST', 'GET'])
+def get_profile(id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    user = db.get_or_404(User, ident=id)
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('users.users'))
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        return redirect(url_for('users.users'))
 
 @user_blueprint.route('/<int:id>/change_password', methods=['POST', 'GET'])
 def change_password(id):

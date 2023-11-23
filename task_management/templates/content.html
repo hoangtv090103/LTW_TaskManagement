@@ -114,10 +114,16 @@
                     </div>
                     <div id="{{ state }}" class="project-detail">
                         {% for task in tasks %}
+                            <div>
+                                <button class="btn btn-primary btn-sm" style="margin-bottom: 10px"
+                                            onclick="event.stopPropagation(); window.location.href='/tasks/delete/{{ task.id }}'">
+                                        Delete
+                                    </button>
+                            </div>
                             <a href="/tasks/{{ task.id }}" class="task" id="{{ task.id }}">
-                                <p>
-                                    {{ task.name }}
-                                </p>
+                                    <p>
+                                        {{ task.name }}
+                                    </p>
                                 <div>
                                     <span>Description:</span>{{ task.description or '' }}
                                 </div>
