@@ -115,10 +115,13 @@
                     <div id="{{ state }}" class="project-detail">
                         {% for task in tasks %}
                             <div class="task" id="{{ task.id }}">
+                             <button class="btn btn-primary btn-sm" onclick="window.location.href='/tasks/{{ task_id.id }}/delete'">
+                                Delete
+                             </button>
                                 <div class="task-box">
                                     <a href="/tasks/{{ task.id }}">
                                         <div>
-                                            {{ task.name }}
+                                            Task Name: {{ task.name }}
                                         </div>
                                     </a>
                                     <div>
