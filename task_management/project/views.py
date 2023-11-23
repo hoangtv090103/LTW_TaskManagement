@@ -59,7 +59,10 @@ def edit_project(id):
 def delete_project(project_id):
     if project_id:
         project = Project.query.get(project_id)
+        tasks = Task.query.filter(Task.project_id == project_id).all()
         if project:
+            for task in tasks:
+                db.session.delete(task)
             db.session.delete(project)
             db.session.commit()
             return index()
