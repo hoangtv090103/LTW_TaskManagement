@@ -24,12 +24,8 @@ def get_task_list(tasks):
 @task_blueprint.route('/')
 @login_required
 def tasks():
-    all_task = Task.query.all()
-    task_list = {
-        'todo': [task for task in all_task if task.status == 'todo'],
-        'in-progress': [task for task in all_task if task.status == 'in-progress'],
-        'done': [task for task in all_task if task.status == 'done']
-    }
+    all_task = Task.query.filter(Task.user_id == current_user.id).all()
+    task_list = get_task_list(all_task)
 
     return index(task_list=task_list)
 
@@ -52,7 +48,7 @@ def new_task():
     return render_template('task_new.html', form=form)
 
 
-@task_blueprint.route('/<int:task_id>')
+@task_blueprint.route('/<int:task_id>', methods=['POST', 'GET'])
 @login_required
 def task_by_id(task_id: int):
     task = Task.query.get(task_id)

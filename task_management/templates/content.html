@@ -116,21 +116,23 @@
                         {% for task in tasks %}
                             <div class="task" id="{{ task.id }}">
                                 <div class="task-box">
-                                    <a href="/tasks/{{ task.id }}">
-                                        <div>
+                                    <a href="{{ url_for('tasks.task_by_id', task_id=task.id) }}">
+                                        <div class="task-name">
                                             {{ task.name }}
                                         </div>
+                                        <div>
+                                            <label>Description:</label>{{ task.description or '' }}
+                                        </div>
+                                        <div>
+                                            <label>Due Date:</label> {{ task.date_end }}
+                                        </div>
+                                        <div>
+                                            <label>Priority:</label> {{ task.priority }}
+                                        </div>
                                     </a>
-                                    <div>
-                                        <label>Description:</label>{{ task.description or '' }}
-                                    </div>
-                                    <div>
-                                        <label>Due Date:</label> {{ task.date_end }}
-                                    </div>
-                                    <div>
-                                        <label>Priority:</label> {{ task.priority }}
-                                    </div>
+
                                 </div>
+
                             </div>
                         {% endfor %}
                     </div>

@@ -1,7 +1,8 @@
 from datetime import datetime
 
+from flask_login import current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SelectField, SubmitField, DateTimeLocalField, DateTimeField
+from wtforms import StringField, SelectField, SubmitField, DateTimeField
 from wtforms.validators import DataRequired
 
 from task_management.models import Project
@@ -19,7 +20,8 @@ class TaskForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
-        self.project_id.choices = [(project.id, project.name) for project in Project.query.all()]
+        self.project_id.choices = [(project.id, project.name) for project in
+                                   Project.query.filter_by(active=True, manager_id=current_user.id).all()]
         self.status.choices = [('todo', 'To Do'), ('in-progress', 'In Progress'), ('done', 'Done')]
 
     def validate(self, extra_validators=None):
@@ -30,4 +32,3 @@ class TaskForm(FlaskForm):
             self.date_start.errors.append('Start date must be earlier than end date')
             return False
         return super(TaskForm, self).validate(extra_validators)
-

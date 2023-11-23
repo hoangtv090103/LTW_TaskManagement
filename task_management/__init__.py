@@ -1,12 +1,13 @@
 import os
 
-from flask import Flask, session
+from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SECRET_KEY'] = os.urandom(24)
