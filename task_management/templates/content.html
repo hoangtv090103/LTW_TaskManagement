@@ -121,16 +121,20 @@
                     </div>
                     <div id="{{ state }}" class="project-detail">
                         {% for task in tasks %}
-                            <div>
-                                <button class="btn btn-primary btn-sm" style="margin-bottom: 10px"
-                                            onclick="event.stopPropagation(); window.location.href='/tasks/delete/{{ task.id }}'">
-                                        Delete
-                                    </button>
-                            </div>
-                            <a href="/tasks/{{ task.id }}" class="task" id="{{ task.id }}">
+
+                            <div onclick="window.location.href='/tasks/{{ task.id }}'"
+                                 class="task {% if task.priority == 'high' %} task-high{% elif task.priority == 'medium' %}task-med {% else %}task-low {% endif %}"
+                                 id="{{ task.id }}">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <p>
                                         {{ task.name }}
                                     </p>
+                                    <a class="stopPropagation btn btn-primary btn-sm" style="margin-bottom: 10px"
+                                       href="/tasks/delete/{{ task.id }}">
+                                        Delete
+                                    </a>
+                                </div>
+
                                 <div>
                                     <span>Description:</span>{{ task.description or '' }}
                                 </div>
@@ -140,7 +144,7 @@
                                 <div>
                                     <span>Priority:</span> {{ task.priority }}
                                 </div>
-                            </a>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
