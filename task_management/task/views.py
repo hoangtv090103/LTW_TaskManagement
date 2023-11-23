@@ -124,21 +124,21 @@ def save_task(task_id):
         return index()
 
 
-@task_blueprint.route('/<int:task_id>/delete', methods=['POST', 'GET', 'DELETE'])
+@task_blueprint.route('/delete/<int:task_id>/', methods=['POST', 'GET', 'DELETE'])
 @login_required
 def delete_task(task_id):
-    if request.method == 'DELETE':
+    if task_id:
         task = Task.query.get(task_id)
         if task:
             db.session.delete(task)
             db.session.commit()
-            return jsonify({"message": "Task deleted successfully"})
+            return tasks()
         else:
             return jsonify({"error": "Task not found"}, 404)
-    elif request.method == 'POST':
-        session['active_task_id'] = task_id
-        session.pop('mode', None)
-        return index()
+    # elif request.method == 'POST':
+    #     session['active_task_id'] = task_id
+    #     session.pop('mode', None)
+    #     return index()
     else:
         return jsonify({"error": "Method not allowed"}, 405)
 

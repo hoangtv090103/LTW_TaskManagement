@@ -33,6 +33,9 @@
                     <div class="project-item active"
                          onclick="window.location.href='{{ url_for('projects.project_by_id', project_id=project.id) }}'">
                         <p>{{ project.name }}</p>
+                        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); window.location.href='/projects/delete/{{ project.id }}'">
+                                Delete
+                        </button>
                         <span>...</span>
                     </div>
 

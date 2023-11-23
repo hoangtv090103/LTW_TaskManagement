@@ -1,4 +1,4 @@
-from flask import Blueprint, session
+from flask import Blueprint, session, jsonify
 from flask import render_template, redirect, url_for
 from flask_login import current_user
 
@@ -53,3 +53,17 @@ def edit_project(id):
         db.session.commit()
         return redirect(url_for('projects.project_by_id', id=id))
     return render_template('project_edit.html', form=form, project=project)
+
+@project_blueprint.route('/delete/<int:project_id>/', methods=['POST', 'GET', 'DELETE'])
+@login_required
+def delete_project(project_id):
+    if project_id:
+        project = Project.query.get(project_id)
+        if project:
+            db.session.delete(project)
+            db.session.commit()
+            return index()
+        else:
+            return jsonify({"error": "Project not found"}, 404)
+    else:
+        return jsonify({"error": "Method not allowed"}, 405)
