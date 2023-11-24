@@ -148,10 +148,13 @@ def delete_task(task_id):
 def search():
     if request.method == 'POST':
         keyword = request.get_json().get('keyword')
-        if session.get('active_project_id'):
-            project_id = session.get('active_project_id')
+        project_id = session.get('active_project_id')
+        project_id = 1
+
+        if project_id:
             tasks = Task.query.filter(Task.project_id == project_id).all()
             task_list = get_task_list(tasks)
-        return index(task_list=task_list)
+        return_list = task_list['todo']
+        return jsonify(return_list)
     else:
         return jsonify({"error": "Method not allowed"}, 405)

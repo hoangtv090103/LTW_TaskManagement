@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Initialize Sortable for each state box
         new Sortable(taskBox, options);
     });
+
+
 });
 
 function updateTaskStatus(taskId, newState) {
@@ -128,27 +130,82 @@ function saveTask(taskId) {
         });
 }
 
-function searchTask() {
-    // Send an API request to update the task status
-    fetch('tasks/search', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            keyword: document.getElementById('searchbar').value,
-        }),
-    })
-        .then(response => {
-            if (response.ok) {
 
-                console.log('Task status updated successfully');
-            } else {
-                // Error handling
-                console.error('Error performing search');
-            }
+(function () {
+    async function searchTask(value) {
+        return fetch('/tasks/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                keyword: value,
+            }),
         })
-        .catch(error => {
-            console.error('AJAX request error:', error);
-        });
-}
+            .then(response => response.json())
+            .catch(error => {
+                console.error('AJAX request error:', error);
+            });
+    }
+
+    const renderItem = (item) => (item.description
+        ? `<div class="tippy-child">
+           <strong>${item.name}</strong>
+           <span>${item.desc}</span>
+           </div>`
+        : `<div class="tippy-child">
+           <strong>${item.name}</strong>
+           </div>`)
+    const renderList = (list) => list.map(item => renderItem(item))
+        .reduce((start, value) => start + value, '')
+
+
+    const searchBar = document.getElementById("searchbar")
+    const tippy = document.getElementById("tippy")
+    const loading = document.getElementById("loading")
+
+    tippy.style.display = "none"
+    loading.style.display = "none"
+    let timerId;
+    let focus;
+
+    searchBar.onkeyup = (e) => {
+        clearTimeout(timerId)
+        const value = searchBar.value;
+        loading.style.display = "block"
+
+        if (!value) {
+            tippy.style.display = "none"
+            loading.style.display = "none"
+            return;
+        }
+        timerId = setTimeout(async () => {
+            searchTask(value).then(data => {
+                if (!focus || !data || data.length === 0) {
+                    tippy.style.display = "none"
+                    loading.style.display = "none"
+                    return;
+                }
+                tippy.style.display = "flex"
+                tippy.innerHTML = `
+                    <span>Tìm thấy ${data.length} kết quả với từ khóa <strong>"${value}"</strong></span>
+                    <div>
+                        ${renderList(data)}
+                    </div>`
+            }).catch(() => {
+                tippy.style.display = "flex"
+                tippy.innerHTML = `<span>Không tìm thấy kết quả với từ khóa <strong>"${value}"</strong></span>`
+            }).finally(() => {
+                loading.style.display = "none"
+            })
+
+        }, 500)
+    }
+    searchBar.onfocus = () => focus = true
+    searchBar.onblur = () => {
+        focus = false
+        tippy.style.display = "none"
+        loading.style.display = "none"
+    }
+})()
+

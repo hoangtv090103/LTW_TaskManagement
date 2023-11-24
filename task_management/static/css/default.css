@@ -63,6 +63,89 @@
         width: 20px;
         height: 20px;
     }
+
+    .loading-icon {
+        position: absolute;
+        right: 8px;
+        top: calc(50% - 10px);
+        width: 20px;
+        height: 20px;
+        animation: rotate360 1s linear infinite;
+
+    }
+}
+
+@keyframes rotate360 {
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+.tippy {
+    position: absolute;
+    z-index: 100;
+    top: calc(100% + 12px);
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 12px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    max-height: 60vh;
+    display: flex;
+    flex-direction: column;
+
+
+    > span {
+        padding: 0 12px 12px 12px;
+        color: #333;
+        user-select: none;
+
+        > strong {
+            color: #555;
+        }
+    }
+
+    > div {
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex: 1;
+
+
+        &::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+    }
+
+    .tippy-child {
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #ddd;
+        }
+
+        > strong {
+            color: #555555;
+        }
+
+        > span {
+            font-size: 14px;
+        }
+    }
 }
 
 .logout {

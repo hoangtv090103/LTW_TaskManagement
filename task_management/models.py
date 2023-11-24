@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import timedelta, date
 
 from flask_login import UserMixin  # UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
@@ -84,8 +85,12 @@ class Project(db.Model):
         return '<Project %r>' % self.name
 
 
+@dataclass
 class Task(db.Model):
     __tablename__ = 'task'
+    name: str
+    description: str
+
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
