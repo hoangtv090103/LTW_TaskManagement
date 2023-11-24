@@ -143,6 +143,10 @@ function saveTask(taskId) {
             }),
         })
             .then(response => response.json())
+            .then(data => {
+                return data
+
+            })
             .catch(error => {
                 console.error('AJAX request error:', error);
             });

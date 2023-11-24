@@ -37,19 +37,20 @@
 
 .search-bar {
     position: relative;
-    max-width: 45%;
-    width: 600px;
+    width: 45%;
+    min-width: fit-content;
     margin: 10px 0;
+    background-color: #74828a;
+    border: 1px solid #fff;
+    border-radius: 8px;
+
 
     .search-input {
         padding: 8px 12px 8px 40px;
-        border-radius: 8px;
-        border: 1px solid #fff;
         outline: none;
-        background-color: #74828a;
         width: 100%;
         color: #fff;
-
+        background-color: #74828a;
         &::placeholder {
             color: #ddd;
         }

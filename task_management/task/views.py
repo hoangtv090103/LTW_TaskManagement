@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from flask import Blueprint, render_template, flash, session
 from flask import jsonify, request
 from flask_login import current_user
@@ -149,12 +148,27 @@ def search():
     if request.method == 'POST':
         keyword = request.get_json().get('keyword')
         project_id = session.get('active_project_id')
-        project_id = 1
 
         if project_id:
-            tasks = Task.query.filter(Task.project_id == project_id).all()
-            task_list = get_task_list(tasks)
-        return_list = task_list['todo']
+            tasks = Task.query.filter(Task.name.like(f'%{keyword}%'), Task.project_id == project_id).all()
+        else:
+            tasks = Task.query.filter(Task.name.like(f'%{keyword}%'), Task.user_id == current_user.id).all()
+        task_list = get_task_list(tasks)
+        # Convert task_list to json
+        return_list = []
+        for key, value in task_list.items():
+            for task in value:
+                return_list.append({key: {
+                    'id': task.id,
+                    'name': task.name,
+                    'description': task.description,
+                    'priority': task.priority,
+                    'status': task.status,
+                    'project_id': task.project_id,
+                    'date_start': task.date_start.strftime('%Y-%m-%d'),
+                    'date_end': task.date_end.strftime('%Y-%m-%d'),
+                    'user_id': task.user_id
+                }})
         return jsonify(return_list)
     else:
         return jsonify({"error": "Method not allowed"}, 405)

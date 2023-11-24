@@ -1,7 +1,6 @@
-from functools import wraps
-
 from flask import redirect, url_for, render_template, flash, session
 from flask_login import login_user, current_user, logout_user
+from functools import wraps
 
 from task_management.forms import *
 from task_management.models import *
@@ -46,7 +45,7 @@ def login():
         attempted_user = User.query.filter_by(username=form.username.data).first()
         if attempted_user and attempted_user.check_password_correction(attempted_password=form.password.data):
             login_user(attempted_user)  # Lệnh này sẽ lưu thông tin user vào session
-            return index()
+            return redirect(url_for('index'))
     return render_template('login.html', form=form)
 
 
@@ -56,7 +55,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/')
+@app.route('/home')
 @login_required
 def index(project_id=None, task_list=None, task_id=None):
     projects = Project.query.filter(Project.manager_id == current_user.id).all()
@@ -70,10 +69,11 @@ def index(project_id=None, task_list=None, task_id=None):
                            task_id=task_id,
                            task_list=task_list)
 
-@app.route('/home')
-@login_required
+
+@app.route('/')
 def home():
     return render_template('home.html')
+
 
 @app.route('/settings')
 @login_required
