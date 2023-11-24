@@ -149,18 +149,19 @@ function saveTask(taskId) {
     }
 
     const renderItem = (item) => (item.description
-        ? `<div class="tippy-child">
+        ? `<a class="tippy-child" href="/tasks/${item.id}">
            <strong>${item.name}</strong>
            <span>${item.desc}</span>
-           </div>`
-        : `<div class="tippy-child">
+           </a>`
+        : `<a class="tippy-child" href="/tasks/${item.id}">
            <strong>${item.name}</strong>
-           </div>`)
+           </a>`)
     const renderList = (list) => list.map(item => renderItem(item))
         .reduce((start, value) => start + value, '')
 
 
-    const searchBar = document.getElementById("searchbar")
+    const searchInput = document.getElementById("searchInput")
+    const searchBar = document.getElementById("searchBar")
     const tippy = document.getElementById("tippy")
     const loading = document.getElementById("loading")
 
@@ -169,9 +170,9 @@ function saveTask(taskId) {
     let timerId;
     let focus;
 
-    searchBar.onkeyup = (e) => {
+    searchInput.onkeyup = (e) => {
         clearTimeout(timerId)
-        const value = searchBar.value;
+        const value = searchInput.value;
         loading.style.display = "block"
 
         if (!value) {
@@ -201,7 +202,7 @@ function saveTask(taskId) {
 
         }, 500)
     }
-    searchBar.onfocus = () => focus = true
+    searchInput.onfocus = () => focus = true
     searchBar.onblur = () => {
         focus = false
         tippy.style.display = "none"

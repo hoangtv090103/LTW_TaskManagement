@@ -88,6 +88,7 @@ class Project(db.Model):
 @dataclass
 class Task(db.Model):
     __tablename__ = 'task'
+    id: int
     name: str
     description: str
 
