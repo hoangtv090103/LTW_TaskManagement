@@ -130,6 +130,70 @@ function saveTask(taskId) {
         });
 }
 
+function renderTaskList(tasks) {
+    // Select the task list elements in the DOM
+    const todoList = document.getElementById('todo');
+    const inProgressList = document.getElementById('in-progress');
+    const doneList = document.getElementById('done');
+
+    // Clear the task lists
+    todoList.innerHTML = '';
+    inProgressList.innerHTML = '';
+    doneList.innerHTML = '';
+
+    let todoCount = 0;
+    let inProgressCount = 0;
+    let doneCount = 0;
+
+    // Loop through the array of tasks
+    tasks.forEach(state => {
+        // Create a new task element and populate it with the task data
+
+        const task = state[Object.keys(state)[0]];
+        const taskElement = `
+            <div onClick="window.location.href='/tasks/${task.id}'"
+                 class="task ${task.priority === 'high' ? 'task-high' : task.priority === 'medium' ? 'task-med' : 'task-low'}"
+                 id="${task.id}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p>
+                        ${task.name}
+                    </p>
+                    <a class="stopPropagation btn btn-primary btn-sm" style="margin-bottom: 10px"
+                       href="/tasks/delete/${task.id}">
+                        Delete
+                    </a>
+                </div>
+
+                <div>
+                    <span>Description:</span>${task.description || ''}
+                </div>
+                <div>
+                    <span>Due Date:</span> ${task.date_end}
+                </div>
+                <div>
+                    <span>Priority:</span> ${task.priority}
+                </div>
+            </div>`;
+
+        // Append the new task element to the appropriate task list
+        if (Object.keys(state)[0] == 'todo') {
+            todoList.innerHTML += taskElement;
+            todoCount++;
+        } else if (Object.keys(state)[0] == 'in-progress') {
+            inProgressList.innerHTML += taskElement;
+            inProgressCount++;
+        } else if (Object.keys(state)[0] == 'done') {
+            doneList.innerHTML += taskElement;
+            doneCount++;
+        }
+    });
+
+    // Update the task count
+    document.getElementsByClassName('todo task-length')[0].textContent = `To Do (${todoCount})`;
+    document.getElementsByClassName('in-progress task-length')[0].textContent = `In Progress (${inProgressCount})`;
+    document.getElementsByClassName('done task-length')[0].textContent = `Done (${doneCount})`;
+
+}
 
 (function () {
     async function searchTask(value) {
@@ -144,8 +208,7 @@ function saveTask(taskId) {
         })
             .then(response => response.json())
             .then(data => {
-                return data
-
+                renderTaskList(data)
             })
             .catch(error => {
                 console.error('AJAX request error:', error);

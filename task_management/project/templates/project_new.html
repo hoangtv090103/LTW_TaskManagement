@@ -35,32 +35,32 @@
                             {{ form.description(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
-                    <div class="form-line">
-                        {{ form.sequence.label(class="form-control-label") }}
-                        {% if form.sequence.errors %}
-                            {{ form.sequence(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.sequence.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.sequence(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-line">
-                        {{ form.manager_id.label(class="form-control-label") }}
-                        {% if form.manager_id.errors %}
-                            {{ form.manager_id(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.manager_id.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.manager_id(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
+{#                    <div class="form-line">#}
+{#                        {{ form.sequence.label(class="form-control-label") }}#}
+{#                        {% if form.sequence.errors %}#}
+{#                            {{ form.sequence(class="form-control form-control-lg is-invalid") }}#}
+{#                            <div class="invalid-feedback">#}
+{#                                {% for error in form.sequence.errors %}#}
+{#                                    <span>{{ error }}</span>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        {% else %}#}
+{#                            {{ form.sequence(class="form-control form-control-lg") }}#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                    <div class="form-line">#}
+{#                        {{ form.manager_id.label(class="form-control-label") }}#}
+{#                        {% if form.manager_id.errors %}#}
+{#                            {{ form.manager_id(class="form-control form-control-lg is-invalid") }}#}
+{#                            <div class="invalid-feedback">#}
+{#                                {% for error in form.manager_id.errors %}#}
+{#                                    <span>{{ error }}</span>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        {% else %}#}
+{#                            {{ form.manager_id(class="form-control form-control-lg") }}#}
+{#                        {% endif %}#}
+{#                    </div>#}
                     <div class="form-line">
                         {{ form.submit(class="submit") }}
                     </div>

@@ -117,7 +117,7 @@
             {% for state, tasks in task_list.items() %}
                 <div class="project-col">
                     <div class="project-header">
-                        <h4>{{ state.replace('-', ' ') }} ({{ tasks|length }})</h4>
+                        <h4 class="{{ state }} task-length">{{ state.replace('-', ' ') }} ({{ tasks|length }})</h4>
                     </div>
                     <div id="{{ state }}" class="project-detail">
                         {% for task in tasks %}

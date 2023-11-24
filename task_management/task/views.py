@@ -23,6 +23,9 @@ def get_task_list(tasks):
 @task_blueprint.route('/')
 @login_required
 def tasks():
+    session.pop('active_task_id', None)
+    session.pop('mode', None)
+    session.pop('active_project_id', None)
     all_task = Task.query.filter(Task.user_id == current_user.id).all()
     task_list = get_task_list(all_task)
 

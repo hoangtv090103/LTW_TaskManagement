@@ -22,7 +22,7 @@ def projects():
 def new_project():
     form = ProjectForm()
     if form.validate_on_submit():
-        project = Project(name=form.name.data, description=form.description.data, sequence=form.sequence.data,
+        project = Project(name=form.name.data, description=form.description.data,
                           manager_id=current_user.id)
         db.session.add(project)
         db.session.commit()
@@ -53,6 +53,7 @@ def edit_project(id):
         db.session.commit()
         return redirect(url_for('projects.project_by_id', id=id))
     return render_template('project_edit.html', form=form, project=project)
+
 
 @project_blueprint.route('/delete/<int:project_id>/', methods=['POST', 'GET', 'DELETE'])
 @login_required
