@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import timedelta, date
-
+from flask import request
 from flask_login import UserMixin  # UserMixin là một class có sẵn trong flask_login để hỗ trợ việc quản lý user
 from flask_mail import Message
 
@@ -112,7 +112,7 @@ class Task(db.Model):
 
 def reminder():
     with app.app_context():
-        tasks = Task.query.filter_by(date_end=date.today() + timedelta(days=1)).all()
+        tasks = Task.query.filter_by(date_end=date.today()).all()
         for task in tasks:
             user = User.query.get(task.user_id)
             message = Message(
@@ -120,11 +120,12 @@ def reminder():
                 recipients=[user.email],
                 sender='tranh459789@gmail.com'
             )
-            message.body = f'Hello {user.name},\n You have a task to complete: {task.name}\nDue date: {task.date_end}'
+            message.body = (
+                f'Hello {user.name},\n You have a task to complete: {task.name}\nDue date: {task.date_end}\nPlease complete it on time.\nBest regards,\nTask Management Team')
             mail.send(message)
 
 
 # convert to local time
-scheduler.add_job(id='Scheduled task', func=reminder, trigger='cron', hour=0, minute=0, second=0, day_of_week='mon-sun',
+scheduler.add_job(id='Scheduled task', func=reminder, trigger='cron', day='*', hour=10, minute=26, second=0,
                   timezone='Asia/Ho_Chi_Minh')
 scheduler.start()

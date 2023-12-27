@@ -43,7 +43,7 @@ def new_task():
                     date_end=form.date_end.data, user_id=current_user.id)
         db.session.add(task)
         db.session.commit()
-        return index()
+        return index(project_id=form.project_id.data)
     if form.errors != {}:
         for err_msg in form.errors.values():
             flash(f'There was an error with creating a task: {err_msg}', category='danger')
@@ -78,7 +78,8 @@ def edit_task(task_id):
         session['mode'] = 'edit'
         return index()
     else:
-        return jsonify({"error": "Method not allowed"}, 405)
+        session.pop('mode', None)
+        return index()
 
 
 def is_changed(task=None, data=None):
