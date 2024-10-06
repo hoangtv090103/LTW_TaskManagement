@@ -1,10 +1,11 @@
 # LTW_TaskManagement
 
-## Description
+## Mô tả
 
-LTW_TaskManagement is a task management application built using Flask. It allows users to create, edit, delete, and manage tasks and projects. The application supports user authentication and provides a user-friendly interface for managing tasks and projects.
+LTW_TaskManagement là một ứng dụng quản lý công việc được xây dựng bằng Flask. Ứng dụng cho phép người dùng tạo, chỉnh sửa, xóa và quản lý các công việc và dự án. Ứng dụng hỗ trợ xác thực người dùng và cung cấp một giao diện thân thiện để quản lý công việc và dự án.
 
-## Folder Structure
+## Cấu trúc Thư mục
+
 ```plaintext
 The repository has the following structure:
 LTW_TaskManagement/
@@ -29,18 +30,19 @@ LTW_TaskManagement/
 │   ├── task/              # Task-related views and templates
 │   ├── user/              # User-related views and templates
 ```
-### Key Files and Directories
 
-- [`app.py`]: The main entry point of the application.
-- [`requirements.txt`]: Lists the dependencies required to run the application.
-- [`task_management/`]: Contains the main application code.
-  - [`__init__.py`]: Initializes the Flask application and its extensions.
-  - [`db/`]: Contains the database files.
-  - [`forms.py`]: Defines the forms used in the application.
-  - [`models.py`]: Defines the database models.
-  - [`project/`]: Contains the project-related views and templates.
-    - [`views.py`]: Defines the views for managing projects.
-  - [`routes.py`]: Defines the routes for the application.
-  - `static/`: Contains static files such as CSS, images, and JavaScript.
-  - [`task/`]: Contains the task-related views and templates.
-  - [`user/`]: Contains the user-related views and templates.
+### Các tệp và thư mục chính
+
+- [app.py]: Điểm đầu vào chính của ứng dụng.
+- [requirements.txt]: Liệt kê các phụ thuộc cần thiết để chạy ứng dụng.
+- [task_management/]: Chứa mã chính của ứng dụng.
+  - [__init__.py]: Khởi tạo ứng dụng Flask và các phần mở rộng.
+  - [db/]: Chứa các tệp cơ sở dữ liệu.
+  - [forms.py]: Định nghĩa các biểu mẫu được sử dụng trong ứng dụng.
+  - [models.py]: Định nghĩa các mô hình cơ sở dữ liệu.
+  - [project/]: Chứa các view và template liên quan đến dự án.
+  - [views.py]: Định nghĩa các view để quản lý dự án.
+  - [routes.py]: Định nghĩa các tuyến đường của ứng dụng.
+  - static/: Chứa các tệp tĩnh như CSS, hình ảnh và JavaScript.
+  - [task/]: Chứa các view và template liên quan đến công việc.
+  - [user/]: Chứa các view và template liên quan đến người dùng.
